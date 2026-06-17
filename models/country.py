@@ -5,7 +5,9 @@ from sqlalchemy.orm import Mapped, mapped_column
 class Country(Base):
     __tablename__ = "country"
 
-    id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
+    identifier: Mapped[str] = mapped_column(String(2), Identity(always=True), primary_key=True)
+    name: Mapped[str] = mapped_column(String(50), nullable=False, unique=True)
+    vat: Mapped[float] = mapped_column(nullable=False)
 
     def __repr__(self):
-        return f"Country({self.id}) :"
+        return f"Country({self.id}) : name = {self.name}, vat = {self.vat}"

@@ -11,4 +11,4 @@ class Author(Base):
     # TODO: Finish author to country foreign key
 
     def __repr__(self):
-        return f"Author({self.id}) :"
+        return f"Author({self.id}) : name = {self.name}, country_identifier = {self.country_identifier}"

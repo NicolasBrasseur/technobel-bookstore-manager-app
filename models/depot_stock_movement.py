@@ -1,7 +1,11 @@
 from database.database import Base
 from sqlalchemy import Identity, String, DateTime, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 import datetime
+
+if TYPE_CHECKING:
+    from depot import Depot
 
 class DepotStockMovement(Base):
     __tablename__ = "depot_stock_movement"
@@ -11,6 +15,7 @@ class DepotStockMovement(Base):
     date: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False, default=datetime.datetime.now())
     comment: Mapped[str] = mapped_column(String(200), nullable=True)
     depot_id: Mapped[int] = mapped_column(ForeignKey("depot.id"), nullable=False)
+    depot: Mapped[Depot] = relationship("Depot", back_populates="stock_movements", uselist=False)
 
     def __repr__(self):
         return f"Depot stock movement({self.id}) : quantity = {self.quantity}, date = {self.date}, comment = {self.comment}"

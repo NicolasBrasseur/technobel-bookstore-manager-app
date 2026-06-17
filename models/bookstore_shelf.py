@@ -1,5 +1,5 @@
 from database.database import Base
-from sqlalchemy import Identity, String
+from sqlalchemy import Identity, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 class BookstoreShelf(Base):
@@ -7,8 +7,8 @@ class BookstoreShelf(Base):
 
     id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
     quantity: Mapped[int] = mapped_column(nullable=True)
-    bookstore_id: Mapped[int] = mapped_column(nullable=False)
-    book_id: Mapped[int] = mapped_column(nullable=False)
+    bookstore_id: Mapped[int] = mapped_column(ForeignKey("bookstore.id"), nullable=False)
+    book_id: Mapped[int] = mapped_column(ForeignKey("book.id"), nullable=False)
 
     def __repr__(self):
         return f"Bookstore shelf({self.id}) : quantity = {self.quantity}"

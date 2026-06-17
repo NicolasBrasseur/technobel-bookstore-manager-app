@@ -1,5 +1,5 @@
 from database.database import Base
-from sqlalchemy import Identity, String
+from sqlalchemy import Identity, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 class Category(Base):

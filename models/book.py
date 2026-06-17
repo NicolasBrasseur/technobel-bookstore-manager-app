@@ -1,5 +1,5 @@
 from database.database import Base
-from sqlalchemy import Identity, String
+from sqlalchemy import Identity, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 class Book(Base):
@@ -9,9 +9,9 @@ class Book(Base):
     isbn: Mapped[int] = mapped_column(nullable=False, unique=True)
     title: Mapped[str] = mapped_column(String(50), nullable=False)
     price: Mapped[float] = mapped_column(nullable=True)
-    category_id: Mapped[int] = mapped_column(nullable=True)
-    author_id: Mapped[int] = mapped_column(nullable=False)
-    publisher_id: Mapped[int] = mapped_column(nullable=False)
+    category_id: Mapped[int] = mapped_column(ForeignKey("category.id"), nullable=True)
+    author_id: Mapped[int] = mapped_column(ForeignKey("author.id"), nullable=False)
+    publisher_id: Mapped[int] = mapped_column(ForeignKey("publisher.id"), nullable=False)
 
 
     def __repr__(self):

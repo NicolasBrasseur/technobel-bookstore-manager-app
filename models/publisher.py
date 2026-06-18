@@ -15,4 +15,4 @@ class Publisher(Base):
     books: Mapped[Book] = relationship("Book", back_populates="publisher")
 
     def __repr__(self):
-        return f"Publisher({self.id}) : name={self.name}"
+        return f"> Publisher({self.id}) : name = {self.name}"

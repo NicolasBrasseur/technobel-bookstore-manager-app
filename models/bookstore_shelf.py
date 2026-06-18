@@ -21,4 +21,4 @@ class BookstoreShelf(Base):
     stock_movements: Mapped[ShelfStockMovement] = relationship("ShelfStockMovement", back_populates="bookstore_shelf")
 
     def __repr__(self):
-        return f"Bookstore shelf({self.id}) : quantity = {self.quantity}"
+        return f"> Bookstore shelf({self.id}) : quantity = {self.quantity}"

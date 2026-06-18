@@ -20,4 +20,4 @@ class Distributor(Base):
     orders: Mapped[PurchaseOrder] = relationship("PurchaseOrder", back_populates="distributor")
 
     def __repr__(self):
-        return f"Distributor({self.id}) : name = {self.name}, operating_country_identifier = {self.operating_country_identifier}"
+        return f"> Distributor({self.id}) : name = {self.name} | operating_country_identifier = {self.operating_country_identifier}"

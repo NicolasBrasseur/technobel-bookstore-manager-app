@@ -15,4 +15,4 @@ class Category(Base):
     books: Mapped[Book] = relationship("Book", back_populates="category")
 
     def __repr__(self):
-        return f"Category({self.id}) : name = {self.name}"
+        return f"> Category({self.id}) : name = {self.name}"

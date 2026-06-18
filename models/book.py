@@ -31,4 +31,4 @@ class Book(Base):
 
 
     def __repr__(self):
-        return f"Book({self.id}) : isbn = {self.isbn}, title = {self.title}, price = {self.price}"
+        return f"> Book({self.id}) : isbn = {self.isbn} | title = {self.title} | price = {self.price}"

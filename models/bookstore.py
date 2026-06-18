@@ -20,4 +20,4 @@ class Bookstore(Base):
     orders: Mapped[PurchaseOrder] = relationship("PurchaseOrder", back_populates="bookstore")
 
     def __repr__(self):
-        return f"Bookstore({self.id}) : name = {self.name}, country_identifier = {self.country_identifier}"
+        return f"> Bookstore({self.id}) : name = {self.name} | country_identifier = {self.country_identifier}"

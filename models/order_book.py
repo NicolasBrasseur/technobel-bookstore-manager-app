@@ -18,4 +18,4 @@ class OrderBook(Base):
     book: Mapped[Book] = relationship("Book", back_populates="order_books", uselist=False)
 
     def __repr__(self):
-        return f"Order-book({self.id}) : quantity = {self.quantity}"
+        return f"> Order-book({self.id}) : quantity = {self.quantity}"

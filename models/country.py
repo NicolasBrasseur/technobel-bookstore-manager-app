@@ -22,4 +22,4 @@ class Country(Base):
     distributors: Mapped[Distributor] = relationship("Distributor", back_populates="operating_country")
 
     def __repr__(self):
-        return f"Country({self.id}) : name = {self.name}, vat = {self.vat}"
+        return f"> Country({self.id}) : name = {self.name} | vat = {self.vat}"

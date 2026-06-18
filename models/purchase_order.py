@@ -35,4 +35,4 @@ class PurchaseOrder(Base):
     order_books: Mapped[OrderBook] = relationship("OrderBook", back_populates="order")
 
     def __repr__(self):
-        return f"Purchase order({self.id}) : status = {self.status.value}, total_price = {self.total_price}, order_date = {self.order_date}"
+        return f"> Purchase order({self.id}) : status = {self.status.value} | total_price = {self.total_price} | order_date = {self.order_date}"

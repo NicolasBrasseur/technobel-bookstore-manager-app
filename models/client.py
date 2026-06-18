@@ -15,4 +15,4 @@ class Client(Base):
     country: Mapped[Country] = relationship("Country", back_populates="clients", uselist=False)
 
     def __repr__(self):
-        return f"Client({self.id}) : name = {self.name}, country_identifier = {self.country_identifier}"
+        return f"> Client({self.id}) : name = {self.name} | country_identifier = {self.country_identifier}"

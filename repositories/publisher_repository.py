@@ -11,8 +11,9 @@ def create_publisher(session: Session, name: str):
         session.add(publisher)
         session.commit()
         session.refresh(publisher)
+        
     except IntegrityError:
-        print("Unexpected error while creating publisher, possible id conflict")
+        print("Unexpected error : cannot create publisher")
         session.rollback()
         return None
     

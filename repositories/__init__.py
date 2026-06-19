@@ -1,2 +1,8 @@
+from repositories.author_repository import create_author
+from repositories.book_repository import create_book
+from repositories.bookstore_shelf_repository import create_bookstore_shelf
+from repositories.bookstore_repository import create_bookstore
+from repositories.client_repository import create_client
+from repositories.country_repository import create_country
+from repositories.order_book_repository import create_order_book
 from repositories.publisher_repository import create_publisher, display_all_publishers
-from repositories.book_repository import create_book, display_book_publisher

@@ -4,8 +4,8 @@ from sqlalchemy.exc import IntegrityError
 
 from models.client import Client
 
-def create_client(session: Session, name: str, country_identifier: str):
-    client = Client(session=session, name=name, country_identifier=country_identifier)
+def create_client(session: Session, name: str, email:str, country_identifier: str):
+    client = Client(session=session, name=name, email=email, country_identifier=country_identifier)
 
     try:
         session.add(client)

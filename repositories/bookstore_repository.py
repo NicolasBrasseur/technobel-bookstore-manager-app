@@ -18,3 +18,9 @@ def create_bookstore(session: Session, name: str, country_identifier: str):
         return None
 
     return bookstore
+
+def get_bookstore_by_name_and_country(session:Session, name:str, country_identifier:str):
+    pass
+
+def display_all_bookstore_having_book(session:Session, book_isbn:int, country_identifier:str):
+    pass

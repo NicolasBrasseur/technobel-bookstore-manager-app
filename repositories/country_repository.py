@@ -18,3 +18,6 @@ def create_country(session: Session, identifier: str, name: str, vat: float):
         return None
 
     return country
+
+def get_country_by_identifier(session:Session, identifier:str):
+    pass

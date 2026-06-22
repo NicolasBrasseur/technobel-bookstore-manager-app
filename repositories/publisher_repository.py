@@ -19,10 +19,5 @@ def create_publisher(session: Session, name: str):
     
     return publisher
 
-
-def display_all_publishers(session: Session):
-    stmt = select(Publisher)
-    publishers = session.execute(stmt).scalars().all()
-
-    for publisher in publishers:
-        print(publisher)
+def get_publisher_by_name(session:Session, name:str):
+    pass

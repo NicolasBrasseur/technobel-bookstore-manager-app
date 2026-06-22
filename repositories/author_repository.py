@@ -18,3 +18,6 @@ def create_author(session: Session, name: str, country_identifier: str):
         return None
 
     return author
+
+def get_author_by_name_and_country(session:Session, name:str, country_identifier:str):
+    pass

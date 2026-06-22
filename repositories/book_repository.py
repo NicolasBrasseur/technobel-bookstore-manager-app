@@ -23,6 +23,30 @@ def create_book(session: Session, isbn: int, title: str, price: float, publicati
 
     return book
 
+def get_book_by_isbn(session:Session, isbn:int):
+    pass
+
+def display_all_books(session:Session):
+    pass
+
+def display_all_books_of_author(session:Session, author_name:str):
+    pass
+
+def display_all_books_of_publisher(session:Session, publisher_name:str):
+    pass
+
+def display_all_books_of_category(session:Session, category_name:str):
+    pass
+
+def display_all_books_of_bookstore(session:Session, bookstore_name:str, country_identifier:str):
+    pass
+
+def display_book_price_by_country(session:Session, book_isbn:int, country_identifier:str):
+    pass
+
+def display_book_by_sales(session:Session, book_isbn:int):
+    pass
+
 # def display_book_publisher(session: Session, book_id:int):
 #     stmt = select(Book).options(joinedload(Book.publisher)).where(Book.id == book_id)
 #     book = session.execute(stmt).scalar_one_or_none()

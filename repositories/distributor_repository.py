@@ -18,3 +18,6 @@ def create_distributor(session: Session, name:str, operating_country_identifier:
         return None
 
     return distributor
+
+def get_distributor_by_name(session:Session, name:str, operating_country_identifier:str):
+    pass

@@ -18,3 +18,6 @@ def create_client(session: Session, name: str, email:str, country_identifier: st
         return None
 
     return client
+
+def get_client_by_email(session:Session, email:str):
+    pass

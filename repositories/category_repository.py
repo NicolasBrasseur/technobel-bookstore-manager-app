@@ -18,3 +18,6 @@ def create_category(session: Session, name: str):
         return None
 
     return category
+
+def get_category_by_name(session:Session, name:str):
+    pass

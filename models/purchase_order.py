@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from distributor import Distributor
 
 class Status(Enum):
-    PENDING = "Pending payment"
+    PENDING = "Pending validation and payment"
     PROCESSING = "Processing"
     PACKAGED = "Packaged, awaiting shipment"
     SHIPPED = "Shipped"

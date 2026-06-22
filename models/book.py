@@ -1,5 +1,5 @@
 from database.database import Base
-from sqlalchemy import Identity, String, ForeignKey
+from sqlalchemy import Identity, String, ForeignKey, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 import datetime
@@ -30,6 +30,10 @@ class Book(Base):
     bookstore_shelves: Mapped[BookstoreShelf] = relationship("BookstoreShelf", back_populates="book")
     depots: Mapped[Depot] = relationship("Depot", back_populates="book")
     order_books: Mapped[OrderBook] = relationship("OrderBook", back_populates="book")
+
+    __table_args__ = (
+        CheckConstraint("price >= 0", name="ck_price"),
+    )
 
 
     def __repr__(self):

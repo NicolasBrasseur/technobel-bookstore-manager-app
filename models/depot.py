@@ -1,5 +1,5 @@
 from database.database import Base
-from sqlalchemy import Identity, String, ForeignKey
+from sqlalchemy import Identity, String, ForeignKey, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 
@@ -19,6 +19,10 @@ class Depot(Base):
     book: Mapped[Book] = relationship("Book", back_populates="depots", uselist=False)
 
     stock_movements: Mapped[DepotStockMovement] = relationship("DepotStockMovement", back_populates="depot")
+
+    __table_args__ = (
+        CheckConstraint("stock_quantity >= 0", name="ck_stock_quantity"),
+    )
 
     def __repr__(self):
         return f"> Depot({self.id}) : stock_quantity = {self.stock_quantity}"

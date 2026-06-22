@@ -1,5 +1,5 @@
 from database.database import Base
-from sqlalchemy import Identity, String, DateTime, ForeignKey
+from sqlalchemy import Identity, String, DateTime, ForeignKey, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 from enum import Enum
@@ -33,6 +33,10 @@ class PurchaseOrder(Base):
     distributor: Mapped[Distributor] = relationship("Distributor", back_populates="orders", uselist=False)
 
     order_books: Mapped[OrderBook] = relationship("OrderBook", back_populates="order")
+
+    __table_args__ = (
+        CheckConstraint("total_price >= 0", name="ck_total_price"),
+    )
 
     def __repr__(self):
         return f"> Purchase order({self.id}) : status = {self.status.value} | total_price = {self.total_price} | order_date = {self.order_date}"

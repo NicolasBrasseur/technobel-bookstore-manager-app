@@ -21,3 +21,8 @@ def create_country(session: Session, identifier: str, name: str, vat: float):
 
 def get_country_by_identifier(session:Session, identifier:str):
     pass
+
+def get_all(session:Session):
+    stmt = select(Country)
+    countries = session.execute(stmt).scalars().all()
+    return countries

@@ -36,11 +36,11 @@ def add_book_to_order(session:Session, bookstore_id:int, book_id:int, quantity:i
 def remove_book_from_order(session:Session, bookstore_id:int, book_id:int, quantity:int):
     pass
 
-def validate_order(session:Session, bookstore_id:int): # Ajouter distributor id ou name + country pour ne valider que les commande de ce distributeur ?
+def validate_order(session:Session, bookstore_id:int):
     pass
 
 def cancel_order(session:Session, bookstore_id:int):
     pass
 
-def packaged_order(session:Session, distributor_id): # Ajouter bookstore id ou name + country pour ne valider que les commandes de ce libraire ?
+def change_order_status(session:Session, distibutor_id:int, bookstore_id:int): # Country = country du distributor
     pass

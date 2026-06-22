@@ -18,3 +18,6 @@ def create_depot(session: Session, stock_quantity:int, distibutor_id:int, book_i
         return None
 
     return depot
+
+def add_stock(session:Session, distributor_id:int, book_id:int, quantity:int):
+    pass

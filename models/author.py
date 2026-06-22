@@ -18,7 +18,7 @@ class Author(Base):
     books: Mapped[Book] = relationship("Book", back_populates="author")
 
     __table_args__ = (
-        UniqueConstraint(name, country_identifier)
+        UniqueConstraint(name, country_identifier, name="uk_author"),
     )
 
     def __repr__(self):

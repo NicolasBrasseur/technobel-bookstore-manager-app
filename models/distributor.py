@@ -20,7 +20,7 @@ class Distributor(Base):
     orders: Mapped[PurchaseOrder] = relationship("PurchaseOrder", back_populates="distributor")
 
     __table_args__ = (
-        UniqueConstraint(name, operating_country_identifier)
+        UniqueConstraint(name, operating_country_identifier, name="uk_distributor"),
     )
 
     def __repr__(self):

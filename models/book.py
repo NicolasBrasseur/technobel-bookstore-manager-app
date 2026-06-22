@@ -2,6 +2,7 @@ from database.database import Base
 from sqlalchemy import Identity, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
+import datetime
 
 if TYPE_CHECKING:
     from category import Category
@@ -10,7 +11,6 @@ if TYPE_CHECKING:
     from bookstore_shelf import BookstoreShelf
     from depot import Depot
     from order_book import OrderBook
-    import datetime
 
 class Book(Base):
     __tablename__ = "book"

@@ -11,6 +11,7 @@ class Client(Base):
 
     id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
     name: Mapped[str] = mapped_column(String(50), nullable=True)
+    email: Mapped[str]= mapped_column(String(50), nullable=False, unique=True)
     country_identifier: Mapped[str] = mapped_column(ForeignKey("country.identifier"), nullable=False)
     country: Mapped[Country] = relationship("Country", back_populates="clients", uselist=False)
 

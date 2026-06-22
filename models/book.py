@@ -10,6 +10,7 @@ if TYPE_CHECKING:
     from bookstore_shelf import BookstoreShelf
     from depot import Depot
     from order_book import OrderBook
+    import datetime
 
 class Book(Base):
     __tablename__ = "book"
@@ -18,6 +19,7 @@ class Book(Base):
     isbn: Mapped[int] = mapped_column(nullable=False, unique=True)
     title: Mapped[str] = mapped_column(String(50), nullable=False)
     price: Mapped[float] = mapped_column(nullable=True)
+    publication_date: Mapped[datetime.datetime] = mapped_column(nullable=True)
     category_id: Mapped[int] = mapped_column(ForeignKey("category.id"), nullable=True)
     category: Mapped[Category] = relationship("Category", back_populates="books", uselist=False)
     author_id: Mapped[int] = mapped_column(ForeignKey("author.id"), nullable=False)

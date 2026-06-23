@@ -43,3 +43,8 @@ def get_purchase_by_distributor_status_and_bookstore(session:Session, distributo
     orders = session.execute(stmt).scalars().all()
     return orders
 
+def get_purchase_by_distributor_id_status_and_bookstore_id(session:Session, distributor_id:int, bookstore_id:int, status:Status):
+    stmt = select(PurchaseOrder).where(PurchaseOrder.bookstore_id == distributor_id, PurchaseOrder.distributor_id == distributor_id, PurchaseOrder.status == status)
+    purchase = session.execute(stmt).scalars().first()
+    return purchase
+

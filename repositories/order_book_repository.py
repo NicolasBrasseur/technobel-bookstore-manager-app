@@ -19,8 +19,8 @@ def get_order_book_by_book_and_status(session:Session, book_isbn:int, bookstore_
     stmt = (select(OrderBook).distinct().join(OrderBook.order).join(OrderBook.book)
             .where(PurchaseOrder.bookstore_id == bookstore_id, PurchaseOrder.status == status, Book.isbn == book_isbn)
     )
-    orders = session.execute(stmt).scalars().all()
-    return orders
+    order = session.execute(stmt).scalars().first()
+    return order
 
 def delete_order(session:Session, order):
     session.delete(order)

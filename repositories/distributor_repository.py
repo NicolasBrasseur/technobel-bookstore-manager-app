@@ -16,6 +16,11 @@ def get_distributor_by_name_and_country(session:Session, name:str, operating_cou
     distributor = session.execute(stmt).scalar_one_or_none()
     return distributor
 
+def get_distributor_by_id(session:Session, id:int):
+    stmt = select(Distributor).where(Distributor.id == id)
+    distributor = session.execute(stmt).scalar_one_or_none()
+    return distributor
+
 def get_distributor_with_book_stock(session:Session, book_isbn:int):
     stmt = (select(Distributor, Depot.stock_quantity).distinct()
             .join(Distributor.depots)

@@ -1,4 +1,4 @@
-from sqlalchemy import select, and_
+from sqlalchemy import select, and_, func
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.exc import IntegrityError
 from typing import TYPE_CHECKING
@@ -21,6 +21,11 @@ def get_order_book_by_book_and_status(session:Session, book_isbn:int, bookstore_
     )
     order = session.execute(stmt).scalars().first()
     return order
+
+def get_orders_book_by_purchase_order_id(session:Session, purchase_order_id):
+    stmt = select(OrderBook).where(OrderBook.order_id == purchase_order_id)
+    orders = session.execute(stmt).scalars().all()
+    return orders
 
 def delete_order(session:Session, order):
     session.delete(order)

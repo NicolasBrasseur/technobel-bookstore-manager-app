@@ -22,6 +22,11 @@ def get_book_by_isbn(session:Session, isbn:int):
     book = session.execute(stmt).scalar_one_or_none()
     return book
 
+def get_book_by_id(session:Session, id:int):
+    stmt = select(Book).where(Book.id == id)
+    book = session.execute(stmt).scalar_one_or_none()
+    return book
+
 def get_all_books(session:Session):
     stmt = select(Book).options(joinedload(Book.author), joinedload(Book.publisher), joinedload(Book.category))
     books = session.execute(stmt).scalars().all()

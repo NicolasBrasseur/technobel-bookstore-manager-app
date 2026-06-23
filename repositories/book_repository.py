@@ -28,17 +28,17 @@ def get_all_books(session:Session):
     return books
 
 def get_all_books_of_author(session:Session, author_name:str):
-    stmt = select(Book).join(Book.author).where(Author.name == author_name)
+    stmt = select(Book).join(Book.author).where(Author.name == author_name).options(joinedload(Book.publisher), joinedload(Book.category))
     books = session.execute(stmt).scalars().all()
     return books
 
 def get_all_books_of_publisher(session:Session, publisher_name:str):
-    stmt = select(Book).join(Book.publisher).where(Publisher.name == publisher_name)
+    stmt = select(Book).join(Book.publisher).where(Publisher.name == publisher_name).options(joinedload(Book.author), joinedload(Book.category))
     books = session.execute(stmt).scalars().all()
     return books
 
 def get_all_books_of_category(session:Session, category_name:str):
-    stmt = select(Book).join(Book.category).where(Category.name == category_name)
+    stmt = select(Book).join(Book.category).where(Category.name == category_name).options(joinedload(Book.author), joinedload(Book.publisher))
     books = session.execute(stmt).scalars().all()
     return books
 
@@ -46,6 +46,7 @@ def get_all_books_of_bookstore(session:Session, bookstore_name:str, country_iden
     stmt = (select(Book, BookstoreShelf.quantity).distinct()
             .join(Book.bookstore_shelves).join(BookstoreShelf.bookstore)
             .where(Bookstore.name == bookstore_name)
+            .options(joinedload(Book.category), joinedload(Book.author), joinedload(Book.publisher))
     )
     books = session.execute(stmt).unique().all()
     return books

@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from models.category import Category
 
 def create_category(session: Session, name: str):
-    category = Category(session=session, name=name)
+    category = Category(name=name)
     session.add(category)
     return category
 

@@ -8,7 +8,7 @@ from models.book import Book
 from models.bookstore_shelf import BookstoreShelf
 
 def create_bookstore(session: Session, name: str, country_identifier: str):
-    bookstore = Bookstore(session=session, name=name, country_identifier=country_identifier)
+    bookstore = Bookstore(name=name, country_identifier=country_identifier)
     session.add(bookstore)
     return bookstore
 
@@ -17,11 +17,12 @@ def get_bookstore_by_name_and_country(session:Session, name:str, country_identif
     bookstore = session.execute(stmt).scalar_one_or_none()
     return bookstore
 
-def display_all_bookstore_having_book(session:Session, book_isbn:int, country_identifier:str):
-    stmt = (select(Bookstore).distinct()
+def get_all_bookstore_having_book(session:Session, book_isbn:int, country_identifier:str):
+    stmt = (select(Bookstore, BookstoreShelf.quantity).distinct()
             .join(Bookstore.shelves)
             .join(BookstoreShelf.book)
             .where(Book.isbn == book_isbn, Bookstore.country_identifier == country_identifier, BookstoreShelf.quantity > 0)
+            .options(joinedload(Bookstore.shelves))
     )
-    bookstores = session.execute(stmt).scalars().all()
+    bookstores = session.execute(stmt).unique().all()
     return bookstores

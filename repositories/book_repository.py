@@ -22,37 +22,40 @@ def get_book_by_isbn(session:Session, isbn:int):
     book = session.execute(stmt).scalar_one_or_none()
     return book
 
-def display_all_books(session:Session):
-    stmt = select(Book).options(joinedload(Book.author, Book.publisher, Book.category))
+def get_all_books(session:Session):
+    stmt = select(Book).options(joinedload(Book.author), joinedload(Book.publisher), joinedload(Book.category))
     books = session.execute(stmt).scalars().all()
     return books
 
-def display_all_books_of_author(session:Session, author_name:str):
+def get_all_books_of_author(session:Session, author_name:str):
     stmt = select(Book).join(Book.author).where(Author.name == author_name)
     books = session.execute(stmt).scalars().all()
     return books
 
-def display_all_books_of_publisher(session:Session, publisher_name:str):
+def get_all_books_of_publisher(session:Session, publisher_name:str):
     stmt = select(Book).join(Book.publisher).where(Publisher.name == publisher_name)
     books = session.execute(stmt).scalars().all()
     return books
 
-def display_all_books_of_category(session:Session, category_name:str):
+def get_all_books_of_category(session:Session, category_name:str):
     stmt = select(Book).join(Book.category).where(Category.name == category_name)
     books = session.execute(stmt).scalars().all()
     return books
 
-def display_all_books_of_bookstore(session:Session, bookstore_name:str, country_identifier:str):
-    stmt = select(Book).distinct().join(Book.bookstore_shelves).join(BookstoreShelf.bookstore).where(Bookstore.name == bookstore_name)
-    books = session.execute(stmt).scalars().all()
+def get_all_books_of_bookstore(session:Session, bookstore_name:str, country_identifier:str):
+    stmt = (select(Book, BookstoreShelf.quantity).distinct()
+            .join(Book.bookstore_shelves).join(BookstoreShelf.bookstore)
+            .where(Bookstore.name == bookstore_name)
+    )
+    books = session.execute(stmt).unique().all()
     return books
 
-def display_book_by_sales(session:Session, book_isbn:int):
+def get_book_by_sales(session:Session):
     stmt = (
         select(Book, func.coalesce(func.sum(OrderBook.quantity), 0).label("total_sales"))
         .outerjoin(OrderBook.book)
         .group_by(Book.id)
         .order_by(func.sum(OrderBook.quantity).desc())
     )
-    books = session.execute(stmt).scalars().all()
+    books = session.execute(stmt).all()
     return books

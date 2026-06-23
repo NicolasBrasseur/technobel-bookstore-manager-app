@@ -11,32 +11,32 @@ from models.bookstore import Bookstore
 if TYPE_CHECKING:
     from models.purchase_order import Status
 
-def create_purchase_order(session: Session, status:Status, total_price:int, order_date:datetime.datetime, bookstore_id:int, distributor_id:int):
-    purchase_order = PurchaseOrder(session=session, status=status, total_price=total_price, order_date=order_date, bookstore_id=bookstore_id, distributor_id=distributor_id)
+def create_purchase(session: Session, status:Status, total_price:int, order_date:datetime.datetime, bookstore_id:int, distributor_id:int):
+    purchase_order = PurchaseOrder(status=status, total_price=total_price, order_date=order_date, bookstore_id=bookstore_id, distributor_id=distributor_id)
     session.add(purchase_order)
     return purchase_order
 
-def display_all_orders_of_distributor(session:Session, distributor_id:int):
+def get_all_purchases_of_distributor(session:Session, distributor_id:int):
     stmt = select(PurchaseOrder).where(PurchaseOrder.distributor_id == distributor_id)
     orders = session.execute(stmt).scalars().all()
     return orders
 
-def display_all_orders_of_bookstore(session:Session, bookstore_id:int):
+def get_all_purchases_of_bookstore(session:Session, bookstore_id:int):
     stmt = select(PurchaseOrder).where(PurchaseOrder.bookstore_id == bookstore_id)
     orders = session.execute(stmt).scalars().all()
     return orders
 
-def get_orders_by_bookstore_and_status(session:Session, bookstore_id:int, status:Status):
+def get_purchases_by_bookstore_and_status(session:Session, bookstore_id:int, status:Status):
     stmt = select(PurchaseOrder).where(and_(PurchaseOrder.bookstore_id == bookstore_id, PurchaseOrder.status == status))
     orders = session.execute(stmt).scalars().all()
     return orders
 
-def get_orders_by_distributor_and_status(session:Session, distibutor_id:int, status:Status):
+def get_purchases_by_distributor_and_status(session:Session, distibutor_id:int, status:Status):
     stmt = select(PurchaseOrder).where(and_(PurchaseOrder.distributor_id == distibutor_id, PurchaseOrder.status == status))
     orders = session.execute(stmt).scalars().all()
     return orders
 
-def get_order_by_distributor_status_and_bookstore(session:Session, distributor_id:int, bookstore_name:str, status:Status):
+def get_purchase_by_distributor_status_and_bookstore(session:Session, distributor_id:int, bookstore_name:str, status:Status):
     stmt = (select(PurchaseOrder).distinct().join(PurchaseOrder.bookstore).join(PurchaseOrder.distributor)
             .where(PurchaseOrder.distributor_id == distributor_id, PurchaseOrder.status == status, Bookstore.country_identifier == Distributor.operating_country_identifier, Bookstore.name == bookstore_name)
     )

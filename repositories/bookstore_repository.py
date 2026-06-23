@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.exc import IntegrityError
 from typing import TYPE_CHECKING
@@ -11,21 +11,13 @@ if TYPE_CHECKING:
 
 def create_bookstore(session: Session, name: str, country_identifier: str):
     bookstore = Bookstore(session=session, name=name, country_identifier=country_identifier)
-
-    try:
-        session.add(bookstore)
-        session.commit()
-        session.refresh(bookstore)
-
-    except IntegrityError as exc:
-        print("Unexpected error : cannot create bookstore")
-        session.rollback()
-        return None
-
+    session.add(bookstore)
     return bookstore
 
 def get_bookstore_by_name_and_country(session:Session, name:str, country_identifier:str):
-    pass
+    stmt = select(Bookstore).where(and_(Bookstore.name == name, Bookstore.country_identifier == country_identifier))
+    bookstore = session.execute(stmt).scalar_one_or_none()
+    return bookstore
 
 def display_all_bookstore_having_book(session:Session, book_isbn:int, country_identifier:str):
     stmt = (select(Bookstore).distinct()

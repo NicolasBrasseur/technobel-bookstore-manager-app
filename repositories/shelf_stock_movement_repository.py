@@ -10,15 +10,5 @@ if TYPE_CHECKING:
 
 def create_shelf_stock_movement(session: Session, quantity:int, date:datetime.datetime, comment:str, bookstore_shelf_id:int):
     shelf_stock_movement = ShelfStockMovement(session=session, quantity=quantity, date=date, comment=comment, bookstore_shelf_id=bookstore_shelf_id)
-
-    try:
-        session.add(shelf_stock_movement)
-        session.commit()
-        session.refresh(shelf_stock_movement)
-
-    except IntegrityError as exc:
-        print("Unexpected error : cannot create shelf stock movement")
-        session.rollback()
-        return None
-
+    session.add(shelf_stock_movement)
     return shelf_stock_movement

@@ -6,18 +6,10 @@ from models.client import Client
 
 def create_client(session: Session, name: str, email:str, country_identifier: str):
     client = Client(session=session, name=name, email=email, country_identifier=country_identifier)
-
-    try:
-        session.add(client)
-        session.commit()
-        session.refresh(client)
-
-    except IntegrityError as exc:
-        print("Unexpected error : cannot create client")
-        session.rollback()
-        return None
-
+    session.add(client)
     return client
 
 def get_client_by_email(session:Session, email:str):
-    pass
+    stmt = select(Client).where(Client.email == email)
+    client = session.execute(stmt).scalar_one_or_none()
+    return client

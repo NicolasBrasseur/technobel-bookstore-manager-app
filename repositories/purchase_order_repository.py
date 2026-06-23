@@ -11,17 +11,7 @@ if TYPE_CHECKING:
 
 def create_purchase_order(session: Session, status:Status, total_price:int, order_date:datetime.datetime, bookstore_id:int, distributor_id:int):
     purchase_order = PurchaseOrder(session=session, status=status, total_price=total_price, order_date=order_date, bookstore_id=bookstore_id, distributor_id=distributor_id)
-
-    try:
-        session.add(purchase_order)
-        session.commit()
-        session.refresh(purchase_order)
-
-    except IntegrityError as exc:
-        print("Unexpected error : cannot create purchase order")
-        session.rollback()
-        return None
-
+    session.add(purchase_order)
     return purchase_order
 
 def display_all_orders_of_distributor(session:Session, distributor_id:int):

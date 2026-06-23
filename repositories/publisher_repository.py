@@ -6,17 +6,7 @@ from models.publisher import Publisher
 
 def create_publisher(session: Session, name: str):
     publisher = Publisher(name=name)
-
-    try:
-        session.add(publisher)
-        session.commit()
-        session.refresh(publisher)
-        
-    except IntegrityError:
-        print("Unexpected error : cannot create publisher")
-        session.rollback()
-        return None
-    
+    session.add(publisher)
     return publisher
 
 def get_publisher_by_name(session:Session, name:str):

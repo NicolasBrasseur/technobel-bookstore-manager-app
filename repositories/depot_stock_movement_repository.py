@@ -10,15 +10,5 @@ if TYPE_CHECKING:
 
 def create_depot_stock_movement(session: Session, quantity:int, date: datetime.datetime, comment:str, depot_id:int):
     depot_stock_movement = DepotStockMovement(session=session, quantity=quantity, date=date, comment=comment, depot_id=depot_id)
-
-    try:
-        session.add(depot_stock_movement)
-        session.commit()
-        session.refresh(depot_stock_movement)
-
-    except IntegrityError as exc:
-        print("Unexpected error : cannot create depot stock movement")
-        session.rollback()
-        return None
-
+    session.add(depot_stock_movement)
     return depot_stock_movement

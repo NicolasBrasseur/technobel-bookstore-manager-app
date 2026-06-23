@@ -6,18 +6,10 @@ from models.category import Category
 
 def create_category(session: Session, name: str):
     category = Category(session=session, name=name)
-
-    try:
-        session.add(category)
-        session.commit()
-        session.refresh(category)
-
-    except IntegrityError as exc:
-        print("Unexpected error : cannot create category")
-        session.rollback()
-        return None
-
+    session.add(category)
     return category
 
 def get_category_by_name(session:Session, name:str):
-    pass
+    stmt = select(Category).where(Category.name == name)
+    category = session.execute(stmt).scalar_one_or_none()
+    return category

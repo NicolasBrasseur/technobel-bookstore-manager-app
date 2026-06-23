@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.exc import IntegrityError
 
@@ -9,5 +9,7 @@ def create_depot(session: Session, stock_quantity:int, distibutor_id:int, book_i
     session.add(depot)
     return depot
 
-def add_stock(session:Session, distributor_id:int, book_id:int, quantity:int):
-    pass
+def get_depot(session:Session, distributor_id:int, book_id:int):
+    stmt = select(Depot).where(and_(Depot.distributor_id == distributor_id, Depot.book_id == book_id))
+    depot = session.execute(stmt).scalar_one_or_none()
+    return depot

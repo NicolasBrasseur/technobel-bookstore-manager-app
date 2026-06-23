@@ -1,13 +1,15 @@
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.exc import IntegrityError
 from typing import TYPE_CHECKING
+import datetime
 
 from models.purchase_order import PurchaseOrder
+from models.distributor import Distributor
+from models.bookstore import Bookstore
 
 if TYPE_CHECKING:
     from models.purchase_order import Status
-    import datetime
 
 def create_purchase_order(session: Session, status:Status, total_price:int, order_date:datetime.datetime, bookstore_id:int, distributor_id:int):
     purchase_order = PurchaseOrder(session=session, status=status, total_price=total_price, order_date=order_date, bookstore_id=bookstore_id, distributor_id=distributor_id)
@@ -15,22 +17,29 @@ def create_purchase_order(session: Session, status:Status, total_price:int, orde
     return purchase_order
 
 def display_all_orders_of_distributor(session:Session, distributor_id:int):
-    pass
+    stmt = select(PurchaseOrder).where(PurchaseOrder.distributor_id == distributor_id)
+    orders = session.execute(stmt).scalars().all()
+    return orders
 
 def display_all_orders_of_bookstore(session:Session, bookstore_id:int):
-    pass
+    stmt = select(PurchaseOrder).where(PurchaseOrder.bookstore_id == bookstore_id)
+    orders = session.execute(stmt).scalars().all()
+    return orders
 
-def add_book_to_order(session:Session, bookstore_id:int, book_id:int, quantity:int):
-    pass
+def get_orders_by_bookstore_and_status(session:Session, bookstore_id:int, status:Status):
+    stmt = select(PurchaseOrder).where(and_(PurchaseOrder.bookstore_id == bookstore_id, PurchaseOrder.status == status))
+    orders = session.execute(stmt).scalars().all()
+    return orders
 
-def remove_book_from_order(session:Session, bookstore_id:int, book_id:int, quantity:int):
-    pass
+def get_orders_by_distributor_and_status(session:Session, distibutor_id:int, status:Status):
+    stmt = select(PurchaseOrder).where(and_(PurchaseOrder.distributor_id == distibutor_id, PurchaseOrder.status == status))
+    orders = session.execute(stmt).scalars().all()
+    return orders
 
-def validate_order(session:Session, bookstore_id:int):
-    pass
+def get_order_by_distributor_status_and_bookstore(session:Session, distributor_id:int, bookstore_name:str, status:Status):
+    stmt = (select(PurchaseOrder).distinct().join(PurchaseOrder.bookstore).join(PurchaseOrder.distributor)
+            .where(PurchaseOrder.distributor_id == distributor_id, PurchaseOrder.status == status, Bookstore.country_identifier == Distributor.operating_country_identifier, Bookstore.name == bookstore_name)
+    )
+    orders = session.execute(stmt).scalars().all()
+    return orders
 
-def cancel_order(session:Session, bookstore_id:int):
-    pass
-
-def change_order_status(session:Session, distibutor_id:int, bookstore_id:int): # Country = country du distributor
-    pass

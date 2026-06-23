@@ -5,14 +5,12 @@ from typing import TYPE_CHECKING
 import datetime
 
 from models.book import Book
-
-if TYPE_CHECKING:
-    from models.author import Author # Peut etre pas mettre dans type checking
-    from models.order_book import OrderBook
-    from models.publisher import Publisher
-    from models.category import Category
-    from models.bookstore_shelf import BookstoreShelf
-    from models.bookstore import Bookstore
+from models.author import Author
+from models.order_book import OrderBook
+from models.publisher import Publisher
+from models.category import Category
+from models.bookstore_shelf import BookstoreShelf
+from models.bookstore import Bookstore
 
 def create_book(session: Session, isbn: int, title: str, price: float, publication_date:datetime.datetime, category_id: int, author_id: int, publisher_id: int):
     book = Book(isbn=isbn, title=title, price=price, publication_date=publication_date, category_id=category_id, author_id=author_id, publisher_id=publisher_id)
@@ -34,7 +32,6 @@ def display_all_books_of_author(session:Session, author_name:str):
     books = session.execute(stmt).scalars().all()
     return books
 
-
 def display_all_books_of_publisher(session:Session, publisher_name:str):
     stmt = select(Book).join(Book.publisher).where(Publisher.name == publisher_name)
     books = session.execute(stmt).scalars().all()
@@ -49,7 +46,6 @@ def display_all_books_of_bookstore(session:Session, bookstore_name:str, country_
     stmt = select(Book).distinct().join(Book.bookstore_shelves).join(BookstoreShelf.bookstore).where(Bookstore.name == bookstore_name)
     books = session.execute(stmt).scalars().all()
     return books
-
 
 def display_book_by_sales(session:Session, book_isbn:int):
     stmt = (

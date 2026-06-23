@@ -5,9 +5,7 @@ from typing import TYPE_CHECKING
 
 from models.bookstore import Bookstore
 from models.book import Book
-
-if TYPE_CHECKING:
-    from models.bookstore_shelf import BookstoreShelf
+from models.bookstore_shelf import BookstoreShelf
 
 def create_bookstore(session: Session, name: str, country_identifier: str):
     bookstore = Bookstore(session=session, name=name, country_identifier=country_identifier)

@@ -10,4 +10,6 @@ def create_publisher(session: Session, name: str):
     return publisher
 
 def get_publisher_by_name(session:Session, name:str):
-    pass
+    stmt = select(Publisher).where(Publisher.name == name)
+    publisher = session.execute(stmt).scalar_one_or_none()
+    return publisher

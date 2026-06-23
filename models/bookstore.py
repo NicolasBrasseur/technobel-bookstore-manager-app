@@ -1,5 +1,5 @@
 from database.database import Base
-from sqlalchemy import Identity, String, ForeignKey
+from sqlalchemy import Identity, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 
@@ -18,6 +18,10 @@ class Bookstore(Base):
 
     shelves: Mapped[BookstoreShelf] = relationship("BookstoreShelf", back_populates="bookstore")
     orders: Mapped[PurchaseOrder] = relationship("PurchaseOrder", back_populates="bookstore")
+
+    __table_args__ = (
+        UniqueConstraint(name, country_identifier, name="uk_bookstore"),
+    )
 
     def __repr__(self):
         return f"> Bookstore({self.id}) : name = {self.name} | country_identifier = {self.country_identifier}"

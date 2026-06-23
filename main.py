@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from api.publisher import router as publisher_router
+from routers.publisher import router as publisher_router
 
 app = FastAPI()
 

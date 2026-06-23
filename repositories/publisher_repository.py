@@ -6,22 +6,10 @@ from models.publisher import Publisher
 
 def create_publisher(session: Session, name: str):
     publisher = Publisher(name=name)
-
-    try:
-        session.add(publisher)
-        session.commit()
-        session.refresh(publisher)
-    except IntegrityError:
-        print("Unexpected error while creating publisher, possible id conflict")
-        session.rollback()
-        return None
-    
+    session.add(publisher)
     return publisher
 
-
-def display_all_publishers(session: Session):
-    stmt = select(Publisher)
-    publishers = session.execute(stmt).scalars().all()
-
-    for publisher in publishers:
-        print(publisher)
+def get_publisher_by_name(session:Session, name:str):
+    stmt = select(Publisher).where(Publisher.name == name)
+    publisher = session.execute(stmt).scalar_one_or_none()
+    return publisher

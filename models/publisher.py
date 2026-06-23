@@ -10,7 +10,7 @@ class Publisher(Base):
     __tablename__ = "publisher"
 
     id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
-    name: Mapped[str] = mapped_column(String(50), nullable=False)
+    name: Mapped[str] = mapped_column(String(50), nullable=False, unique=True)
 
     books: Mapped[Book] = relationship("Book", back_populates="publisher")
 

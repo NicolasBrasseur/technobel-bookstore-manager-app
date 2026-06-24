@@ -27,9 +27,9 @@ class Book(Base):
     publisher_id: Mapped[int] = mapped_column(ForeignKey("publisher.id"), nullable=False)
     publisher: Mapped[Publisher] = relationship("Publisher", back_populates="books", uselist=False)
 
-    bookstore_shelves: Mapped[BookstoreShelf] = relationship("BookstoreShelf", back_populates="book")
-    depots: Mapped[Depot] = relationship("Depot", back_populates="book")
-    order_books: Mapped[OrderBook] = relationship("OrderBook", back_populates="book")
+    bookstore_shelves: Mapped[list[BookstoreShelf]] = relationship("BookstoreShelf", back_populates="book")
+    depots: Mapped[list[Depot]] = relationship("Depot", back_populates="book")
+    order_books: Mapped[list[OrderBook]] = relationship("OrderBook", back_populates="book")
 
     __table_args__ = (
         CheckConstraint("price >= 0", name="ck_price"),

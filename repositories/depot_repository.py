@@ -7,6 +7,7 @@ from models.depot import Depot
 def create_depot(session: Session, stock_quantity:int, distributor_id:int, book_id:int):
     depot = Depot(stock_quantity=stock_quantity, distributor_id=distributor_id, book_id=book_id)
     session.add(depot)
+    session.flush()
     return depot
 
 def get_depot(session:Session, distributor_id:int, book_id:int):

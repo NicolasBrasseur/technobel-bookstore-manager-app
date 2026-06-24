@@ -45,30 +45,33 @@ def add_book_to_purchase_order(session:Session, book_isbn:int, bookstore_id:int,
     if not book:
         print("This book is not saved in the database")
         return None
+    
+    distributor, distributor_stock_quantity = get_distributor_with_book_stock(session, book_isbn)
+    if not distributor:
+        print("There is no distributor with stock for this book")
+        return None
+    
+    if distributor_stock_quantity < quantity:
+        print(f"!! : Distributor currently don't have sufficient stock for this book ({distributor_stock_quantity}/{quantity}) but order is still proceeding")
+
+    purchase = get_purchase_by_distributor_id_status_and_bookstore_id(session, distributor.id, bookstore_id, Status.PENDING)
+    if not purchase:
+        purchase = create_purchase(session, Status.PENDING, 0, datetime.datetime.now(), bookstore_id, distributor.id)
+        print(f"New purchase order created with {distributor.name}")
 
     order = get_order_book_by_book_and_status(session, book_isbn, bookstore_id, Status.PENDING)
     if not order:
-        distributor, distributor_stock_quantity = get_distributor_with_book_stock(session, book_isbn)
-        if not distributor:
-            print("There is no distributor with stock for this book")
-            return None
-        
-        if distributor_stock_quantity < quantity:
-            print(f"!! : Distributor currently don't have sufficient stock for this book ({distributor_stock_quantity}/{quantity}) but order is still proceeding")
-
-        purchase = get_purchase_by_distributor_id_status_and_bookstore_id(session, distributor.id, bookstore_id, Status.PENDING)
-        if not purchase:
-            purchase = create_purchase(session, Status.PENDING, 0, datetime.datetime.now(), bookstore_id, distributor.id)
-            print(f"New purchase order created with {distributor.name}")
         
         order = create_order_book(session, quantity, purchase.id, book.id)
     else:
         order.quantity += quantity
 
+    print(purchase)
+
     try:
         session.commit()
         session.refresh(purchase)
-        session.commit(order)
+        session.refresh(order)
     except IntegrityError:
         print("Unexpected error while adding book to purchase")
         return None
@@ -76,6 +79,7 @@ def add_book_to_purchase_order(session:Session, book_isbn:int, bookstore_id:int,
     return order
 
 def remove_book_from_purchase_order(session:Session, book_isbn:int, bookstore_id:int, quantity:int):
+    print(f"Quantity : {quantity}")
     book = get_book_by_isbn(session, book_isbn)
     if not book:
         ("This book is not saved in the database")
@@ -86,7 +90,8 @@ def remove_book_from_purchase_order(session:Session, book_isbn:int, bookstore_id
         print("No pending order found with this book, the order either has a another status or don't exist")
         return None
     
-    order.quantity -= min(quantity, order.quantity)
+    print(f"Previous quantity : {order.quantity}")
+    order.quantity = max(0, order.quantity - quantity)
     print(f"New order quantity : {order.quantity}")
 
     if order.quantity <= 0:
@@ -94,6 +99,8 @@ def remove_book_from_purchase_order(session:Session, book_isbn:int, bookstore_id
         session.delete(order)
         session.commit()
         return None
+    
+    session.commit()
 
     return order
 
@@ -134,7 +141,7 @@ def validate_purchase_order(session:Session, purchase_order:PurchaseOrder, opera
     total_price = 0
     country = get_country_by_identifier(session, operating_country_identifier)
     for order in orders:
-        total_price += order.book.price * (1 + country.vat/100)
+        total_price += order.book.price * (1 + country.vat/100) * order.quantity
     
     purchase_order.total_price = total_price
     purchase_order.status = Status.PROCESSING
@@ -218,13 +225,11 @@ def buy_book(session: Session, bookstore_id: int, book_isbn: int, quantity: int)
         return None
 
     bookstore_shelf.quantity -= quantity
-
     create_shelf_stock_movement(session,-quantity,datetime.datetime.now(), f"Customer purchase : {quantity}x {bookstore_shelf.book.title}, stock remaining : {bookstore_shelf.quantity}", bookstore_shelf.id)
 
     session.commit()
 
     print(f"Purchase completed : {quantity}x {bookstore_shelf.book.title}")
-
     return bookstore_shelf
 
 def add_stock(session: Session, distributor_id: str, book_isbn: int, quantity: int):
@@ -233,23 +238,19 @@ def add_stock(session: Session, distributor_id: str, book_isbn: int, quantity: i
 
     if not depot:
         depot = create_depot(session, quantity, distributor_id, book.id)
-
-        create_depot_stock_movement(session, quantity, datetime.datetime.now(), f"Initial stock creation : {quantity}x {depot.book.title}, stock available : {depot.stock_quantity}", depot.id)
+        create_depot_stock_movement(session, quantity, datetime.datetime.now(), f"Initial stock creation : {quantity}x {book.title}, stock available : {depot.stock_quantity}", depot.id)
 
         session.commit()
 
-        print(f"Depot created for book {depot.book.title}")
-
+        print(f"Depot created for book {book.title}")
         return depot
 
     depot.stock_quantity += quantity
-
-    create_depot_stock_movement(session, quantity, datetime.datetime.now(), f"Stock replenishment : {quantity}x {depot.book.title}, stock available : {depot.stock_quantity}", depot.id)
+    create_depot_stock_movement(session, quantity, datetime.datetime.now(), f"Stock replenishment : {quantity}x {book.title}, stock available : {depot.stock_quantity}", depot.id)
 
     session.commit()
 
-    print(f"Stock added : {quantity}x {depot.book.title}")
-
+    print(f"Stock added : {quantity}x {book.title}")
     return depot
 
     

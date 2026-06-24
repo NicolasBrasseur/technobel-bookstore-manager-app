@@ -7,6 +7,7 @@ from models.bookstore_shelf import BookstoreShelf
 def create_bookstore_shelf(session: Session, quantity: int, bookstore_id: int, book_id: int):
     bookstore_shelf = BookstoreShelf(quantity=quantity, bookstore_id=bookstore_id, book_id=book_id)
     session.add(bookstore_shelf)
+    session.flush()
     return bookstore_shelf
 
 def get_bookstore_shelf(session:Session, bookstore_id:int, book_id:int):

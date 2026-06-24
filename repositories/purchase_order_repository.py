@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 def create_purchase(session: Session, status:Status, total_price:int, order_date:datetime.datetime, bookstore_id:int, distributor_id:int):
     purchase_order = PurchaseOrder(status=status, total_price=total_price, order_date=order_date, bookstore_id=bookstore_id, distributor_id=distributor_id)
     session.add(purchase_order)
+    session.flush()
     return purchase_order
 
 def get_all_purchases_of_distributor(session:Session, distributor_id:int):

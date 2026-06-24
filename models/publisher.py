@@ -12,7 +12,7 @@ class Publisher(Base):
     id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
     name: Mapped[str] = mapped_column(String(50), nullable=False, unique=True)
 
-    books: Mapped[Book] = relationship("Book", back_populates="publisher")
+    books: Mapped[list[Book]] = relationship("Book", back_populates="publisher")
 
     def __repr__(self):
         return f"> Publisher({self.id}) : name = {self.name}"

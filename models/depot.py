@@ -18,7 +18,7 @@ class Depot(Base):
     book_id: Mapped[int] = mapped_column(ForeignKey("book.id"), nullable=False)
     book: Mapped[Book] = relationship("Book", back_populates="depots", uselist=False)
 
-    stock_movements: Mapped[DepotStockMovement] = relationship("DepotStockMovement", back_populates="depot")
+    stock_movements: Mapped[list[DepotStockMovement]] = relationship("DepotStockMovement", back_populates="depot")
 
     __table_args__ = (
         CheckConstraint("stock_quantity >= 0", name="ck_stock_quantity"),

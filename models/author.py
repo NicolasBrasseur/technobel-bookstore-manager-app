@@ -15,7 +15,7 @@ class Author(Base):
     country_identifier: Mapped[str] = mapped_column(ForeignKey("country.identifier"), nullable=False)
     country: Mapped[Country] = relationship("Country", back_populates="authors", uselist=False)
 
-    books: Mapped[Book] = relationship("Book", back_populates="author")
+    books: Mapped[list[Book]] = relationship("Book", back_populates="author")
 
     __table_args__ = (
         UniqueConstraint(name, country_identifier, name="uk_author"),

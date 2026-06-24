@@ -16,10 +16,10 @@ class Country(Base):
     name: Mapped[str] = mapped_column(String(50), nullable=False, unique=True)
     vat: Mapped[float] = mapped_column(nullable=False)
 
-    authors: Mapped[Author] = relationship("Author", back_populates="country")
-    bookstores: Mapped[Bookstore] = relationship("Bookstore", back_populates="country")
-    clients: Mapped[Client] = relationship("Client", back_populates="country")
-    distributors: Mapped[Distributor] = relationship("Distributor", back_populates="operating_country")
+    authors: Mapped[list[Author]] = relationship("Author", back_populates="country")
+    bookstores: Mapped[list[Bookstore]] = relationship("Bookstore", back_populates="country")
+    clients: Mapped[list[Client]] = relationship("Client", back_populates="country")
+    distributors: Mapped[list[Distributor]] = relationship("Distributor", back_populates="operating_country")
 
     def __repr__(self):
         return f"> Country({self.identifier}) : name = {self.name} | vat = {self.vat}"

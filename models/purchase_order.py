@@ -32,7 +32,7 @@ class PurchaseOrder(Base):
     distributor_id: Mapped[int] = mapped_column(ForeignKey("distributor.id"), nullable=False)
     distributor: Mapped[Distributor] = relationship("Distributor", back_populates="orders", uselist=False)
 
-    order_books: Mapped[OrderBook] = relationship("OrderBook", back_populates="order")
+    order_books: Mapped[list[OrderBook]] = relationship("OrderBook", back_populates="order")
 
     __table_args__ = (
         CheckConstraint("total_price >= 0", name="ck_total_price"),

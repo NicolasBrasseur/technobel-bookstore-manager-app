@@ -16,8 +16,8 @@ class Bookstore(Base):
     country_identifier: Mapped[str] = mapped_column(ForeignKey("country.identifier"), nullable=False)
     country: Mapped[Country] = relationship("Country", back_populates="bookstores", uselist=False)
 
-    shelves: Mapped[BookstoreShelf] = relationship("BookstoreShelf", back_populates="bookstore")
-    orders: Mapped[PurchaseOrder] = relationship("PurchaseOrder", back_populates="bookstore")
+    shelves: Mapped[list[BookstoreShelf]] = relationship("BookstoreShelf", back_populates="bookstore")
+    orders: Mapped[list[PurchaseOrder]] = relationship("PurchaseOrder", back_populates="bookstore")
 
     __table_args__ = (
         UniqueConstraint(name, country_identifier, name="uk_bookstore"),

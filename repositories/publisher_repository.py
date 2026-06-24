@@ -13,3 +13,8 @@ def get_publisher_by_name(session:Session, name:str):
     stmt = select(Publisher).where(Publisher.name == name)
     publisher = session.execute(stmt).scalar_one_or_none()
     return publisher
+
+def get_publisher_by_id(session:Session, publisher_id:int):
+    stmt = select(Publisher).where(Publisher.id == publisher_id)
+    publisher = session.execute(stmt).scalar_one_or_none()
+    return publisher

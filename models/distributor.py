@@ -16,8 +16,8 @@ class Distributor(Base):
     operating_country_identifier: Mapped[str] = mapped_column(ForeignKey("country.identifier"), nullable=False)
     operating_country: Mapped[Country] = relationship("Country", back_populates="distributors", uselist=False) 
 
-    depots: Mapped[Depot] = relationship("Depot", back_populates="distributor")
-    orders: Mapped[PurchaseOrder] = relationship("PurchaseOrder", back_populates="distributor")
+    depots: Mapped[list[Depot]] = relationship("Depot", back_populates="distributor")
+    orders: Mapped[list[PurchaseOrder]] = relationship("PurchaseOrder", back_populates="distributor")
 
     __table_args__ = (
         UniqueConstraint(name, operating_country_identifier, name="uk_distributor"),
